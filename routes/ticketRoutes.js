@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Ticket = require('../models/ticket');
+const Ticket = require('../Models/ticket');
 
 // Endpoint para obtener todos los tickets
 router.get('/', async (req, res) => {

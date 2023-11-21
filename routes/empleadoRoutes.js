@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Empleado = require('../models/empleado');
+const Empleado = require('../Models/empleado');
 
 // Obtener todos los empleados
 router.get('/', async (req, res) => {
