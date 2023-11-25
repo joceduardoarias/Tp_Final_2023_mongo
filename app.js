@@ -19,8 +19,6 @@ mongoose.connect('mongodb+srv://myAtlasDBUser:castillo2030*@myatlasclusteredu.ga
 
 // Routes
 app.use('/tickets', ticketRoutes);
-app.use('/clientes', clienteRoutes);
-app.use('/empleados', empleadoRoutes);
 
 app.listen(port, () => {
   console.log(`Servidor corriendo en el puerto ${port}`);
