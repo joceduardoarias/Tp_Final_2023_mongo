@@ -28,7 +28,7 @@ const ticketController = {
     consultarTicketsDeCliente: async (req, res) => {
         try {
             const clienteId = req.params.clienteId;
-            const tickets = await Ticket.find({ clienteId: mongoose.Types.ObjectId(clienteId) });
+            const tickets = await Ticket.find({ clienteId: clienteId });
             res.json(tickets);
         } catch (error) {
             res.status(500).send(error.message);
@@ -140,7 +140,7 @@ const ticketController = {
     consultarTicketsPorEmpleado: async (req, res) => {
         try {
             const empleadoId = req.params.empleadoId;
-            const tickets = await Ticket.find({ 'historial.empleadoId': mongoose.Types.ObjectId(empleadoId) });
+            const tickets = await Ticket.find({ 'historial.empleadoId': empleadoId });
             res.json(tickets);
         } catch (error) {
             res.status(500).send(error.message);
