@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
-const Ticket = require('../Models/ticket'); // Asegúrate de que la ruta al modelo 'ticket' sea correcta
+const Ticket = require('../Models/ticket');
+const Cliente = require('../Models/cliente'); 
+const Empleado = require('../Models/empleado'); 
 
 const ticketController = {
     // 1. Consulta todos los tickets
@@ -163,7 +165,65 @@ const ticketController = {
         } catch (error) {
             res.status(500).send(error.message);
         }
-    }
+    },
+
+    ticketsMultiplesEstados: async (req, res) => {
+        try {
+            const resultado = await Ticket.aggregate([
+                { $unwind: "$historial" },
+                { $group: { _id: { ticketId: "$ticketId", estado: "$historial.estado" }, total: { $sum: 1 } } }
+            ]);
+            res.json(resultado);
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+    },
+    
+    ticketsResueltosExitosamente: async (req, res) => {
+        try {
+            const resultado = await Ticket.aggregate([
+                { $match: { "soluciones.exitosa": true } },
+                { $count: "ticketsExitosos" }
+            ]);
+            res.json(resultado);
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+    },
+    clientesPorCodigoPostal: async (req, res) => {
+        try {
+            const resultado = await Cliente.aggregate([
+                { $group: { _id: "$localidad.codigoPostal", totalClientes: { $sum: 1 } } }
+            ]);
+            res.json(resultado);
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+    },
+    distanciaPromedioTickets: async (req, res) => {
+        try {
+            const resultado = await Ticket.aggregate([
+                { $geoNear: { near: { type: "Point", coordinates: [ -58.381559, -34.603684 ] }, distanceField: "dist.calculada", spherical: true } },
+                { $group: { _id: null, distanciaPromedio: { $avg: "$dist.calculada" } } }
+            ]);
+            res.json(resultado);
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+    },
+    clientesConMultiplesPlanes: async (req, res) => {
+        try {
+            const resultado = await Cliente.aggregate([
+                { $project: { nombre: 1, cantidadPlanes: { $size: { $filter: { input: "$historialPlanes", as: "plan", cond: { $ne: ["$$plan.tipoPlan", ""] } } } } } },
+                { $match: { cantidadPlanes: { $gt: 1 } } }
+            ]);
+            res.json(resultado);
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+    },
+    
+    
 };
 
 module.exports = ticketController;
