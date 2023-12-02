@@ -60,7 +60,7 @@ const ticketController = {
     consultarTicketsPorFechaHistorial: async (req, res) => {
         try {
             const fecha = new Date(req.query.fecha);
-            const tickets = await Ticket.find({ 'historial.fecha': { $gt: fecha } });
+            const tickets = await Ticket.find({ 'historial.fecha': { $gte: fecha } });
             res.json(tickets);
         } catch (error) {
             res.status(500).send(error.message);
@@ -98,7 +98,7 @@ const ticketController = {
     // 9. Busca tickets con más de 3 entradas en historial
     consultarTicketsConHistorialExtenso: async (req, res) => {
         try {
-            const tickets = await Ticket.find({ 'historial.3': { $exists: true } });
+            const tickets = await Ticket.find({ 'historial.1': { $exists: true } });
             res.json(tickets);
         } catch (error) {
             res.status(500).send(error.message);
