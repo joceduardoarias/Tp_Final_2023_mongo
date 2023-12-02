@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const ticketSchema = new Schema({
     ticketId: { type: String, required: true, unique: true },
-    clienteId: { type: mongoose.Schema.Types.ObjectId, ref: 'Cliente', required: true },
+    clienteId: { type: String, required: true },
     tipo: { type: String, required: true, enum: ['desperfecto', 'cambio de plan', 'dar de baja', 'dar de alta'] },
     estado: { type: String, required: true, enum: ['abierto', 'cerrado', 'en espera'] },
     historial: [
@@ -11,7 +11,7 @@ const ticketSchema = new Schema({
             fecha: { type: Date, default: Date.now },
             detalle: String,
             departamento: String,
-            empleadoId: { type: mongoose.Schema.Types.ObjectId, ref: 'Empleado' }
+            empleadoId: { type: String, required: true },
         }
     ],
     soluciones: [
