@@ -14,7 +14,7 @@ const clienteSchema = new Schema({
         canales: [String],
         fechaCompra: Date
     }],
-    tickets: [{ type: String, required: true, unique: true }],
+    tickets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ticket' }],
     ubicacion: {
         type: { type: String, enum: ['Point'], default: 'Point' },
         coordinates: {

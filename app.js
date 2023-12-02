@@ -1,4 +1,4 @@
-require('dotenv').config(); // Asegúrate de instalar el paquete 'dotenv' y crear un archivo '.env'
+require('dotenv').config(); 
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
